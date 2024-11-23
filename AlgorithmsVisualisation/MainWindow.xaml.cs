@@ -18,7 +18,7 @@ namespace AlgorithmsVisualisation
     {
         private List<int> array = [];
         private readonly Random random = new();
-        private readonly int sampleCount = 150; // NOTE: Добавить выбор в программе.
+        private int sampleCount = 10;
         private int delay;
 
         private CancellationTokenSource? cancellationTokenSource;
@@ -97,13 +97,17 @@ namespace AlgorithmsVisualisation
             }
         }
 
+        private void EnableUI(bool enable)
+        {
+            ShuffleButton.IsEnabled = enable;
+            SampleSlider.IsEnabled = enable;
+            AlgSelector.IsEnabled = enable;
+        }
+
         private void ShuffleButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!isWorking)
-            {
-                Shuffle(array);
-                DrawSamples(AlgCanvas, array);
-            }
+            Shuffle(array);
+            DrawSamples(AlgCanvas, array);
         }
 
         private async void StartButton_Click(object sender, RoutedEventArgs e)
@@ -120,6 +124,8 @@ namespace AlgorithmsVisualisation
                 isWorking = true;
                 StartButton.Content = "Остановить";
 
+                EnableUI(false);
+
                 try
                 {
                     await BubbleSort(AlgCanvas, array, cancellationTokenSource.Token);
@@ -132,6 +138,8 @@ namespace AlgorithmsVisualisation
                 {
                     isWorking = false;
                     StartButton.Content = "Запустить";
+
+                    EnableUI(true);
                     cancellationTokenSource.Dispose();
                 }
             }
@@ -146,6 +154,16 @@ namespace AlgorithmsVisualisation
         private void SpeedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             delay = (int) (4005 - SpeedSlider.Value); // Над зедержкой ещё надо будет подумать.
+        }
+
+        private void SampleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (AlgCanvas.ActualWidth > 0 && AlgCanvas.ActualHeight > 0)
+            {
+                sampleCount = (int)SampleSlider.Value;
+                array = Enumerable.Range(1, sampleCount).ToList();
+                DrawSamples(AlgCanvas, array);
+            }
         }
     }
 }
