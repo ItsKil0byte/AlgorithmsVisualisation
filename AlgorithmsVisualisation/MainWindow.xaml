@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AlgorithmsVisualisation"
         mc:Ignorable="d"
+        Loaded="Window_Loaded"
         Title="Алгоритмы | Лабораторная №4" Height="800" Width="689" ResizeMode="CanMinimize" FontSize="16">
     <Grid>
         <TabControl>
