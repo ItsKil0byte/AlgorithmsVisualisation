@@ -19,7 +19,7 @@ namespace AlgorithmsVisualisation
         private List<int> array = [];
         private readonly Random random = new();
         private readonly int sampleCount = 150; // NOTE: Добавить выбор в программе.
-        private readonly int delay = 5; // NOTE: Добавить выбор в программе.
+        private int delay;
 
         private CancellationTokenSource? cancellationTokenSource;
         private bool isWorking = false;
@@ -54,20 +54,20 @@ namespace AlgorithmsVisualisation
 
         // NOTE: Это просто заглушечка, но работает нормально.
         // Попытаюсь все алгосы вынести как отдельный класс.
-        private async Task BubbleSort(Canvas canvas, List<int> array, int delay, CancellationToken token)
+        private async Task BubbleSort(Canvas canvas, List<int> array, CancellationToken token)
         {
             for (int i = 0; i < array.Count; i++)
             {
                 for (int j = 0; j <  array.Count - 1 - i; j++)
                 {
-                    if (token.IsCancellationRequested) return;
-
                     if (array[j] > array[j + 1])
                     {
+                        if (token.IsCancellationRequested) return;
+
                         (array[j], array[j + 1]) = (array[j + 1], array[j]);
 
                         DrawSamples(canvas, array);
-                        await Task.Delay(delay, token);
+                        await DynamicDelay(token);
                     }
                 }
             }
@@ -79,6 +79,21 @@ namespace AlgorithmsVisualisation
             {
                 int swapIndex = random.Next(i + 1);
                 (array[i], array[swapIndex]) = (array[swapIndex], array[i]);
+            }
+        }
+
+        private async Task DynamicDelay(CancellationToken token)
+        {
+            int delay = this.delay;
+            int elapsed = 0;
+
+            while (elapsed < delay)
+            {
+                if (token.IsCancellationRequested) return;
+
+                await Task.Delay(5, token);
+                elapsed += 10;
+                delay = this.delay;
             }
         }
 
@@ -107,7 +122,7 @@ namespace AlgorithmsVisualisation
 
                 try
                 {
-                    await BubbleSort(AlgCanvas, array, delay, cancellationTokenSource.Token);
+                    await BubbleSort(AlgCanvas, array, cancellationTokenSource.Token);
                 }
                 catch (TaskCanceledException)
                 {
@@ -126,6 +141,11 @@ namespace AlgorithmsVisualisation
         {
             array = Enumerable.Range(1, sampleCount).ToList();
             DrawSamples(AlgCanvas, array);
+        }
+
+        private void SpeedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            delay = (int) (4005 - SpeedSlider.Value); // Над зедержкой ещё надо будет подумать.
         }
     }
 }
