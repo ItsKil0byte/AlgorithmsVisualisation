@@ -38,8 +38,8 @@
                     <Label Content="Медленно" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10"/>
                     <Label Content="Быстро" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10"/>
 
-                    <Button x:Name="StartButton" Content="Запустить" Grid.Row="2" Grid.Column="1" Margin="10"/>
-                    <Button x:Name="ShuffleButton" Content="Перемешать" Grid.Row="2" Margin="10"/>
+                    <Button x:Name="StartButton" Content="Запустить" Grid.Row="2" Grid.Column="1" Margin="10" Click="StartButton_Click"/>
+                    <Button x:Name="ShuffleButton" Content="Перемешать" Grid.Row="2" Margin="10" Click="ShuffleButton_Click"/>
 
                     <Label Content="Пояснение:" Grid.Row="3" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"/>
                     <TextBox x:Name="StepsTextBox" Grid.Row="3" Margin="10,50,10,10" IsReadOnly="True" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
