@@ -1,0 +1,9 @@
+﻿using System.Windows.Controls;
+
+namespace AlgorithmsVisualisation
+{
+    public interface ISorting
+    {
+        Task Sort(Canvas canvas, List<int> array, CancellationToken token, Func<Task> onStep);
+    }
+}

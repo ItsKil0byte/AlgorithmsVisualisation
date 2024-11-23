@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using AlgorithmsVisualisation.SortingAlgorithms;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -23,6 +24,8 @@ namespace AlgorithmsVisualisation
 
         private CancellationTokenSource? cancellationTokenSource;
         private bool isWorking = false;
+
+        private ISorting algorithm = new BubbleSort();
 
         public MainWindow()
         {
@@ -52,27 +55,6 @@ namespace AlgorithmsVisualisation
             }
         }
 
-        // NOTE: Это просто заглушечка, но работает нормально.
-        // Попытаюсь все алгосы вынести как отдельный класс.
-        private async Task BubbleSort(Canvas canvas, List<int> array, CancellationToken token)
-        {
-            for (int i = 0; i < array.Count; i++)
-            {
-                for (int j = 0; j <  array.Count - 1 - i; j++)
-                {
-                    if (array[j] > array[j + 1])
-                    {
-                        if (token.IsCancellationRequested) return;
-
-                        (array[j], array[j + 1]) = (array[j + 1], array[j]);
-
-                        DrawSamples(canvas, array);
-                        await DynamicDelay(token);
-                    }
-                }
-            }
-        }
-
         private void Shuffle(List<int> array)
         {
             for (int i = array.Count - 1; i > 0; i--)
@@ -95,6 +77,15 @@ namespace AlgorithmsVisualisation
                 elapsed += 10;
                 delay = this.delay;
             }
+        }
+
+        private async Task RunSort()
+        {
+            await algorithm.Sort(AlgCanvas, array, cancellationTokenSource!.Token, async () =>
+            {
+                DrawSamples(AlgCanvas, array);
+                await DynamicDelay(cancellationTokenSource.Token);
+            });
         }
 
         private void EnableUI(bool enable)
@@ -128,7 +119,7 @@ namespace AlgorithmsVisualisation
 
                 try
                 {
-                    await BubbleSort(AlgCanvas, array, cancellationTokenSource.Token);
+                    await RunSort();
                 }
                 catch (TaskCanceledException)
                 {
