@@ -1,15 +1,5 @@
-﻿using AlgorithmsVisualisation.SortingAlgorithms;
-using System.IO;
-using System.Text;
+﻿using AlgorithmsVisualisation.Windows;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace AlgorithmsVisualisation
 {
@@ -18,182 +8,27 @@ namespace AlgorithmsVisualisation
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly Dictionary<string, ISorting>? algorithms = [];
-
-        private List<int> array = [];
-        private readonly Random random = new();
-        private int sampleCount = 10;
-        private int delay;
-
-        private CancellationTokenSource? cancellationTokenSource;
-        private bool isWorking = false;
-
         public MainWindow()
         {
             InitializeComponent();
-
-            algorithms!["Сортировка пузырьком"] = new BubbleSort();
-            // ...
-
-            AlgSelector.ItemsSource = algorithms.Keys;
         }
 
-        private void DrawSamples(Canvas canvas, List<int> array)
+        private void InternalSortButton_Click(object sender, RoutedEventArgs e)
         {
-            canvas.Children.Clear();
-            double barWidth = canvas.ActualWidth / array.Count;
-
-            for (int i = 0; i < array.Count; i++)
-            {
-                double barHeight = (double)array[i] / array.Max() * canvas.ActualHeight;
-
-                Rectangle rectangle = new()
-                {
-                    Width = barWidth - 2,
-                    Height = barHeight,
-                    Fill = Brushes.Black,
-                };
-
-                Canvas.SetLeft(rectangle, i * barWidth);
-                Canvas.SetTop(rectangle, canvas.ActualHeight - barHeight);
-
-                canvas.Children.Add(rectangle);
-            }
+            InternalSortWindow window = new();
+            window.Show();
         }
 
-        private void Shuffle(List<int> array)
+        private void ExternalSortButton_Click(object sender, RoutedEventArgs e)
         {
-            for (int i = array.Count - 1; i > 0; i--)
-            {
-                int swapIndex = random.Next(i + 1);
-                (array[i], array[swapIndex]) = (array[swapIndex], array[i]);
-            }
+            ExternalSortWindow window = new();
+            window.Show();
         }
 
-        private async Task DynamicDelay(CancellationToken token)
+        private void WordSortButton_Click(object sender, RoutedEventArgs e)
         {
-            int delay = this.delay;
-            int elapsed = 0;
-
-            while (elapsed < delay)
-            {
-                if (token.IsCancellationRequested) return;
-
-                await Task.Delay(5, token);
-                elapsed += 10;
-                delay = this.delay;
-            }
-        }
-
-        private async Task RunSort(ISorting algorithm)
-        {
-            await algorithm.Sort(
-                AlgCanvas,
-                array,
-                cancellationTokenSource!.Token,
-                async () =>
-                {
-                    DrawSamples(AlgCanvas, array);
-                    await DynamicDelay(cancellationTokenSource.Token);
-                },
-                token => DynamicDelay(token),
-                log => Log(log),
-                message => Dispatcher.Invoke(() => StepsTextBox.Text = message)
-            );
-        }
-
-        private async Task Log(string message)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                LogsTextBox.AppendText($"[{DateTime.Now:HH:mm:ss}] : {message}\n");
-                LogsTextBox.ScrollToEnd();
-            });
-
-            string logFile = "logs.txt";
-            await File.AppendAllTextAsync(logFile, $"[{DateTime.Now:HH:mm:ss}] : {message}\n");
-        }
-
-        private void EnableUI(bool enable)
-        {
-            ShuffleButton.IsEnabled = enable;
-            SampleSlider.IsEnabled = enable;
-            AlgSelector.IsEnabled = enable;
-        }
-
-        private void ShuffleButton_Click(object sender, RoutedEventArgs e)
-        {
-            Shuffle(array);
-            DrawSamples(AlgCanvas, array);
-        }
-
-        private async void StartButton_Click(object sender, RoutedEventArgs e)
-        {
-            string? algorithmName = AlgSelector.SelectedItem.ToString();
-            ISorting? algorithm = algorithms![algorithmName!];
-
-            if (isWorking)
-            {
-                await Log($"{algorithm.GetType().Name} прервана пользователем.");
-
-                cancellationTokenSource?.Cancel();
-                isWorking = false;
-                StartButton.Content = "Запустить";
-            }
-            else
-            {
-                cancellationTokenSource = new();
-                isWorking = true;
-                StartButton.Content = "Остановить";
-                bool wasCancelled = false;
-
-                EnableUI(false);
-
-                try
-                {
-                    await Log($"{algorithm.GetType().Name} запущена для массива из {array.Count} элементов.");
-
-                    await RunSort(algorithm);
-                }
-                catch (TaskCanceledException)
-                {
-                    wasCancelled = true;
-                }
-                finally
-                {
-                    isWorking = false;
-                    StartButton.Content = "Запустить";
-
-                    if (!wasCancelled)
-                    {
-                        await Log($"{algorithm.GetType().Name} завершилась.");
-                    }
-
-                    EnableUI(true);
-                    cancellationTokenSource.Dispose();
-                }
-            }
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            array = Enumerable.Range(1, sampleCount).ToList();
-            DrawSamples(AlgCanvas, array);
-        }
-
-        private void SpeedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            delay = (int)(4005 - SpeedSlider.Value); // Над зедержкой ещё надо будет подумать.
-        }
-
-        private void SampleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (AlgCanvas.ActualWidth > 0 && AlgCanvas.ActualHeight > 0)
-            {
-                sampleCount = (int)SampleSlider.Value;
-                array = Enumerable.Range(1, sampleCount).ToList();
-                DrawSamples(AlgCanvas, array);
-            }
+            WordSortWindow window = new();
+            window.Show();
         }
     }
 }

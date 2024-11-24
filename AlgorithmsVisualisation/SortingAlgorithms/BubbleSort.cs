@@ -34,7 +34,7 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
                     }
                 }
 
-                onExplain?.Invoke($"Пробег {i + 1} завершен. Столбец находится на своём месте.");
+                onExplain?.Invoke($"Пробег {i + 1} завершен.");
                 await onDynamicDelay(token);
             }
 

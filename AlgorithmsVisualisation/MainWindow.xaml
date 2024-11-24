@@ -5,59 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AlgorithmsVisualisation"
         mc:Ignorable="d"
-        Loaded="Window_Loaded"
-        Title="Алгоритмы | Лабораторная №4" Height="800" Width="689" ResizeMode="CanMinimize" FontSize="16">
+        Title="Алгоритмы | Лабораторная №4" Height="500" Width="400" ResizeMode="CanMinimize" FontSize="16">
     <Grid>
-        <TabControl>
-            <TabItem Header="Алгоритмы внутренней сортировки">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="3.5*"/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition Height="2.*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-                    <Border BorderBrush="Gray" BorderThickness="1" Margin="10" Grid.ColumnSpan="2">
-                        <Canvas x:Name="AlgCanvas"/>
-                    </Border>
-
-                    <Label Content="Выбор алгоритма:" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5"/>
-                    <ComboBox x:Name="AlgSelector" SelectedIndex="0" Height="40" Grid.Row="1" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Margin="10"/>
-
-                    <Label Content="Количество элементов:" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5"/>
-                    <Slider x:Name="SampleSlider" Grid.Row="2" Minimum="10" Maximum="200" TickFrequency="10" IsSnapToTickEnabled="True" TickPlacement="BottomRight" VerticalAlignment="Center" Margin="10" ValueChanged="SampleSlider_ValueChanged"/>
-                    <Label Content="10" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10"/>
-                    <Label Content="200" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10"/>
-
-                    <Label Content="Скорость сортировки:" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5"/>
-                    <Slider x:Name="SpeedSlider" Grid.Row="1" Grid.Column="1" Minimum="5" Maximum="4000" TickFrequency="500" IsSnapToTickEnabled="True" TickPlacement="BottomRight" VerticalAlignment="Center" Margin="10" ValueChanged="SpeedSlider_ValueChanged"/>
-                    <Label Content="Медленно" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10"/>
-                    <Label Content="Быстро" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10"/>
-
-                    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
-                        <Button x:Name="ShuffleButton" Content="Перемешать" Margin="10" Width="150" Click="ShuffleButton_Click"/>
-                        <Button x:Name="StartButton" Content="Запустить" Margin="10" Width="150" Click="StartButton_Click"/>
-                    </StackPanel> 
-
-                    <Label Content="Пояснение:" Grid.Row="3" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"/>
-                    <TextBox x:Name="StepsTextBox" Grid.Row="3" Margin="10,50,10,10" IsReadOnly="True" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" TextWrapping="Wrap"/>
-
-                    <Label Content="Логи:" Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"/>
-                    <TextBox x:Name="LogsTextBox" Grid.Row="3" Grid.Column="1" Margin="10,50,10,10" IsReadOnly="True" TextWrapping="Wrap"/>
-
-                </Grid>
-            </TabItem>
-            <TabItem Header="Алгоритмы внешней сортировки">
-
-            </TabItem>
-            <TabItem Header="Сортировка слов">
-
-            </TabItem>
-        </TabControl>
+        <Label Content="Выберите алгоритмы:" FontWeight="Bold" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Button x:Name="InternalSortButton" Content="Алгоритмы внутренней сортировки" Margin="15" FontWeight="Bold" Grid.Row="1" Click="InternalSortButton_Click"/>
+        <Button x:Name="ExternalSortButton" Content="Алгоритмы внешней сортировки" Margin="15" FontWeight="Bold" Grid.Row="2" Click="ExternalSortButton_Click"/>
+        <Button x:Name="WordSortButton" Content="Алгоритмы сортировки слов" Margin="15" FontWeight="Bold" Grid.Row="3" Click="WordSortButton_Click"/>
     </Grid>
 </Window>

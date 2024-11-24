@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace AlgorithmsVisualisation
+namespace AlgorithmsVisualisation.SortingAlgorithms
 {
     public interface ISorting
     {

@@ -1,0 +1,51 @@
+﻿<Window x:Class="AlgorithmsVisualisation.Windows.InternalSortWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AlgorithmsVisualisation"
+        mc:Ignorable="d"
+        Loaded="Window_Loaded"
+        Title="Алгоритмы внутренней сортировки" Height="800" Width="700" FontSize="16">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3.5*"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="2.*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Border BorderBrush="Gray" BorderThickness="1" Margin="10" Grid.ColumnSpan="2">
+            <Canvas x:Name="AlgCanvas"/>
+        </Border>
+
+        <Label Content="Выбор алгоритма:" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5"/>
+        <ComboBox x:Name="AlgSelector" SelectedIndex="0" Height="40" Grid.Row="1" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Margin="10"/>
+
+        <Label Content="Количество элементов:" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5"/>
+        <Slider x:Name="SampleSlider" Grid.Row="2" Minimum="10" Maximum="200" TickFrequency="10" IsSnapToTickEnabled="True" TickPlacement="BottomRight" VerticalAlignment="Center" Margin="10" ValueChanged="SampleSlider_ValueChanged"/>
+        <Label Content="10" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10"/>
+        <Label Content="200" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10"/>
+
+        <Label Content="Скорость сортировки:" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5"/>
+        <Slider x:Name="SpeedSlider" Grid.Row="1" Grid.Column="1" Minimum="5" Maximum="4000" TickFrequency="500" IsSnapToTickEnabled="True" TickPlacement="BottomRight" VerticalAlignment="Center" Margin="10" ValueChanged="SpeedSlider_ValueChanged"/>
+        <Label Content="Медленно" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10"/>
+        <Label Content="Быстро" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10"/>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
+            <Button x:Name="ShuffleButton" Content="Перемешать" Margin="10" Width="150" Click="ShuffleButton_Click"/>
+            <Button x:Name="StartButton" Content="Запустить" Margin="10" Width="150" Click="StartButton_Click"/>
+        </StackPanel>
+
+        <Label Content="Пояснение:" Grid.Row="3" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"/>
+        <TextBox x:Name="StepsTextBox" Grid.Row="3" Margin="10,50,10,10" IsReadOnly="True" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" TextWrapping="Wrap"/>
+
+        <Label Content="Логи:" Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"/>
+        <TextBox x:Name="LogsTextBox" Grid.Row="3" Grid.Column="1" Margin="10,50,10,10" IsReadOnly="True" TextWrapping="Wrap"/>
+
+    </Grid>
+</Window>
