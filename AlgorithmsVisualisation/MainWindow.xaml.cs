@@ -81,11 +81,18 @@ namespace AlgorithmsVisualisation
 
         private async Task RunSort()
         {
-            await algorithm.Sort(AlgCanvas, array, cancellationTokenSource!.Token, async () =>
-            {
-                DrawSamples(AlgCanvas, array);
-                await DynamicDelay(cancellationTokenSource.Token);
-            });
+            await algorithm.Sort(
+                AlgCanvas, 
+                array, 
+                cancellationTokenSource!.Token, 
+                async () =>
+                {
+                    DrawSamples(AlgCanvas, array);
+                    await DynamicDelay(cancellationTokenSource.Token);
+                },
+                token => DynamicDelay(token),
+                message => Dispatcher.Invoke(() => StepsTextBox.Text = message)
+            );
         }
 
         private void EnableUI(bool enable)

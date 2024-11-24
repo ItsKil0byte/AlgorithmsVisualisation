@@ -4,6 +4,13 @@ namespace AlgorithmsVisualisation
 {
     public interface ISorting
     {
-        Task Sort(Canvas canvas, List<int> array, CancellationToken token, Func<Task> onStep);
+        Task Sort(
+            Canvas canvas,
+            List<int> array,
+            CancellationToken token,
+            Func<Task> onStep,
+            Func<CancellationToken, Task> onDynamicDelay,
+            Action<String> onExplain
+        );
     }
 }
