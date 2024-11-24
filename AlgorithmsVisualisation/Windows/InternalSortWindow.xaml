@@ -6,46 +6,70 @@
         xmlns:local="clr-namespace:AlgorithmsVisualisation"
         mc:Ignorable="d"
         Loaded="Window_Loaded"
-        Title="Алгоритмы внутренней сортировки" Height="800" Width="700" FontSize="16">
+        Title="Алгоритмы внутренней сортировки" Height="650" Width="1300" FontSize="16" ResizeMode="CanMinimize">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="3.5*"/>
             <RowDefinition/>
             <RowDefinition/>
-            <RowDefinition Height="2.*"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.4*"/>
             <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="0.5*"/>
         </Grid.ColumnDefinitions>
 
-        <Border BorderBrush="Gray" BorderThickness="1" Margin="10" Grid.ColumnSpan="2">
+        <GroupBox Header="Визуализация" BorderThickness="3" BorderBrush="LightGray" Grid.Column="1" Grid.RowSpan="5" Margin="5" Padding="5">
             <Canvas x:Name="AlgCanvas"/>
-        </Border>
+        </GroupBox>
 
-        <Label Content="Выбор алгоритма:" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5"/>
-        <ComboBox x:Name="AlgSelector" SelectedIndex="0" Height="40" Grid.Row="1" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Margin="10"/>
+        <GroupBox Header="Выбор алгоритма" BorderThickness="3" BorderBrush="LightGray" Margin="5">
+            <ComboBox x:Name="AlgSelector" SelectedIndex="0" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="10" Height="50"/>
+        </GroupBox>
 
-        <Label Content="Количество элементов:" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5"/>
-        <Slider x:Name="SampleSlider" Grid.Row="2" Minimum="10" Maximum="200" TickFrequency="10" IsSnapToTickEnabled="True" TickPlacement="BottomRight" VerticalAlignment="Center" Margin="10" ValueChanged="SampleSlider_ValueChanged"/>
-        <Label Content="10" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10"/>
-        <Label Content="200" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10"/>
+        <GroupBox Header="Скорость сортировки" BorderThickness="3" BorderBrush="LightGray" Margin="5" Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
 
-        <Label Content="Скорость сортировки:" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5"/>
-        <Slider x:Name="SpeedSlider" Grid.Row="1" Grid.Column="1" Minimum="5" Maximum="4000" TickFrequency="500" IsSnapToTickEnabled="True" TickPlacement="BottomRight" VerticalAlignment="Center" Margin="10" ValueChanged="SpeedSlider_ValueChanged"/>
-        <Label Content="Медленно" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10"/>
-        <Label Content="Быстро" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10"/>
+                <Slider x:Name="SpeedSlider" Minimum="5" Maximum="4000" TickFrequency="500" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Margin="10" ValueChanged="SpeedSlider_ValueChanged"/>
+                <Label Content="Медленно" Grid.Row="1" Margin="15,0,0,0" HorizontalAlignment="Left"/>
+                <Label Content="Быстро" Grid.Row="1" Margin="0,0,15,0" HorizontalAlignment="Right"/>
+            </Grid>
+        </GroupBox>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
-            <Button x:Name="ShuffleButton" Content="Перемешать" Margin="10" Width="150" Click="ShuffleButton_Click"/>
-            <Button x:Name="StartButton" Content="Запустить" Margin="10" Width="150" Click="StartButton_Click"/>
-        </StackPanel>
+        <GroupBox Header="Количество элементов" BorderThickness="3" BorderBrush="LightGray" Margin="5" Grid.Row="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
 
-        <Label Content="Пояснение:" Grid.Row="3" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"/>
-        <TextBox x:Name="StepsTextBox" Grid.Row="3" Margin="10,50,10,10" IsReadOnly="True" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" TextWrapping="Wrap"/>
+                <Slider x:Name="SampleSlider" Minimum="10" Maximum="200" TickFrequency="10" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Margin="10" ValueChanged="SampleSlider_ValueChanged"/>
+                <Label Content="10" Grid.Row="1" Margin="15,0,0,0" HorizontalAlignment="Left"/>
+                <Label Content="200" Grid.Row="1" Margin="0,0,15,0" HorizontalAlignment="Right"/>
+            </Grid>
+        </GroupBox>
 
-        <Label Content="Логи:" Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"/>
-        <TextBox x:Name="LogsTextBox" Grid.Row="3" Grid.Column="1" Margin="10,50,10,10" IsReadOnly="True" TextWrapping="Wrap"/>
+        <GroupBox Header="Перемешать элементы" Grid.Row="3" BorderThickness="3" BorderBrush="LightGray" Margin="5" Padding="10">
+            <Button x:Name="ShuffleButton" Content="Перемешать" Click="ShuffleButton_Click"/>
+        </GroupBox>
+
+        <GroupBox Header="Запустить | Остановить" Grid.Row="4" BorderThickness="3" BorderBrush="LightGray" Margin="5" Padding="10">
+            <Button x:Name="StartButton" Content="Запустить" Click="StartButton_Click"/>
+        </GroupBox>
+
+        <GroupBox Header="Пояснение" BorderThickness="3" BorderBrush="LightGray" Grid.Column="2" Margin="5" Padding="10" Grid.RowSpan="2">
+            <TextBox x:Name="StepsTextBox" FontWeight="Bold" IsReadOnly="True" TextWrapping="Wrap" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        </GroupBox>
+
+        <GroupBox Header="Логи" BorderThickness="3" BorderBrush="LightGray" Grid.Column="2" Grid.Row="2" Margin="5" Padding="10" Grid.RowSpan="3">
+            <TextBox x:Name="LogsTextBox" IsReadOnly="True" TextWrapping="Wrap"/>
+        </GroupBox>
 
     </Grid>
 </Window>
