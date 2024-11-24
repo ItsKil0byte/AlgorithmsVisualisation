@@ -18,6 +18,8 @@ namespace AlgorithmsVisualisation
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly Dictionary<string, ISorting>? algorithms = [];
+
         private List<int> array = [];
         private readonly Random random = new();
         private int sampleCount = 10;
@@ -26,11 +28,14 @@ namespace AlgorithmsVisualisation
         private CancellationTokenSource? cancellationTokenSource;
         private bool isWorking = false;
 
-        private ISorting algorithm = new BubbleSort();
-
         public MainWindow()
         {
             InitializeComponent();
+
+            algorithms!["Сортировка пузырьком"] = new BubbleSort();
+            // ...
+
+            AlgSelector.ItemsSource = algorithms.Keys;
         }
 
         private void DrawSamples(Canvas canvas, List<int> array)
@@ -80,7 +85,7 @@ namespace AlgorithmsVisualisation
             }
         }
 
-        private async Task RunSort()
+        private async Task RunSort(ISorting algorithm)
         {
             await algorithm.Sort(
                 AlgCanvas,
@@ -124,6 +129,9 @@ namespace AlgorithmsVisualisation
 
         private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            string? algorithmName = AlgSelector.SelectedItem.ToString();
+            ISorting? algorithm = algorithms![algorithmName!];
+
             if (isWorking)
             {
                 await Log($"{algorithm.GetType().Name} прервана пользователем.");
@@ -145,7 +153,7 @@ namespace AlgorithmsVisualisation
                 {
                     await Log($"{algorithm.GetType().Name} запущена для массива из {array.Count} элементов.");
 
-                    await RunSort();
+                    await RunSort(algorithm);
                 }
                 catch (TaskCanceledException)
                 {

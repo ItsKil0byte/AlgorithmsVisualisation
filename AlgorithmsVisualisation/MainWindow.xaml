@@ -27,12 +27,7 @@
                     </Border>
 
                     <Label Content="Выбор алгоритма:" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5"/>
-                    <ComboBox x:Name="AlgSelector" SelectedIndex="0" Height="40" Grid.Row="1" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Margin="10">
-                        <ComboBoxItem>Алгоритм №1</ComboBoxItem>
-                        <ComboBoxItem>Алгоритм №2</ComboBoxItem>
-                        <ComboBoxItem>Алгоритм №3</ComboBoxItem>
-                        <ComboBoxItem>Алгоритм №4</ComboBoxItem>
-                    </ComboBox>
+                    <ComboBox x:Name="AlgSelector" SelectedIndex="0" Height="40" Grid.Row="1" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Margin="10"/>
 
                     <Label Content="Количество элементов:" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5"/>
                     <Slider x:Name="SampleSlider" Grid.Row="2" Minimum="10" Maximum="200" TickFrequency="10" IsSnapToTickEnabled="True" TickPlacement="BottomRight" VerticalAlignment="Center" Margin="10" ValueChanged="SampleSlider_ValueChanged"/>
