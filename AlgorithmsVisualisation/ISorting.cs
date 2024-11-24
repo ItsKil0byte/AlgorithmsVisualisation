@@ -10,7 +10,8 @@ namespace AlgorithmsVisualisation
             CancellationToken token,
             Func<Task> onStep,
             Func<CancellationToken, Task> onDynamicDelay,
-            Action<String> onExplain
+            Action<string> onLog,
+            Action<string> onExplain
         );
     }
 }

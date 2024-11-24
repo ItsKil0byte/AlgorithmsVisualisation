@@ -1,4 +1,5 @@
 ﻿using AlgorithmsVisualisation.SortingAlgorithms;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,8 +40,8 @@ namespace AlgorithmsVisualisation
 
             for (int i = 0; i < array.Count; i++)
             {
-                double barHeight = (double) array[i] / array.Max() * canvas.ActualHeight;
-                
+                double barHeight = (double)array[i] / array.Max() * canvas.ActualHeight;
+
                 Rectangle rectangle = new()
                 {
                     Width = barWidth - 2,
@@ -82,17 +83,30 @@ namespace AlgorithmsVisualisation
         private async Task RunSort()
         {
             await algorithm.Sort(
-                AlgCanvas, 
-                array, 
-                cancellationTokenSource!.Token, 
+                AlgCanvas,
+                array,
+                cancellationTokenSource!.Token,
                 async () =>
                 {
                     DrawSamples(AlgCanvas, array);
                     await DynamicDelay(cancellationTokenSource.Token);
                 },
                 token => DynamicDelay(token),
+                log => Log(log),
                 message => Dispatcher.Invoke(() => StepsTextBox.Text = message)
             );
+        }
+
+        private async Task Log(string message)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                LogsTextBox.AppendText($"[{DateTime.Now:HH:mm:ss}] : {message}\n");
+                LogsTextBox.ScrollToEnd();
+            });
+
+            string logFile = "logs.txt";
+            await File.AppendAllTextAsync(logFile, $"[{DateTime.Now:HH:mm:ss}] : {message}\n");
         }
 
         private void EnableUI(bool enable)
@@ -112,6 +126,8 @@ namespace AlgorithmsVisualisation
         {
             if (isWorking)
             {
+                await Log($"{algorithm.GetType().Name} прервана пользователем.");
+
                 cancellationTokenSource?.Cancel();
                 isWorking = false;
                 StartButton.Content = "Запустить";
@@ -121,21 +137,29 @@ namespace AlgorithmsVisualisation
                 cancellationTokenSource = new();
                 isWorking = true;
                 StartButton.Content = "Остановить";
+                bool wasCancelled = false;
 
                 EnableUI(false);
 
                 try
                 {
+                    await Log($"{algorithm.GetType().Name} запущена для массива из {array.Count} элементов.");
+
                     await RunSort();
                 }
                 catch (TaskCanceledException)
                 {
-                    // IGNORE
+                    wasCancelled = true;
                 }
                 finally
                 {
                     isWorking = false;
                     StartButton.Content = "Запустить";
+
+                    if (!wasCancelled)
+                    {
+                        await Log($"{algorithm.GetType().Name} завершилась.");
+                    }
 
                     EnableUI(true);
                     cancellationTokenSource.Dispose();
@@ -151,7 +175,7 @@ namespace AlgorithmsVisualisation
 
         private void SpeedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            delay = (int) (4005 - SpeedSlider.Value); // Над зедержкой ещё надо будет подумать.
+            delay = (int)(4005 - SpeedSlider.Value); // Над зедержкой ещё надо будет подумать.
         }
 
         private void SampleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

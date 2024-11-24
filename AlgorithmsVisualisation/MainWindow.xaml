@@ -53,7 +53,7 @@
                     <TextBox x:Name="StepsTextBox" Grid.Row="3" Margin="10,50,10,10" IsReadOnly="True" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" TextWrapping="Wrap"/>
 
                     <Label Content="Логи:" Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"/>
-                    <TextBox x:Name="LogsTextBox" Grid.Row="3" Grid.Column="1" Margin="10,50,10,10" IsReadOnly="True"/>
+                    <TextBox x:Name="LogsTextBox" Grid.Row="3" Grid.Column="1" Margin="10,50,10,10" IsReadOnly="True" TextWrapping="Wrap"/>
 
                 </Grid>
             </TabItem>
