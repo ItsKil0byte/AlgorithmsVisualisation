@@ -22,6 +22,9 @@ namespace AlgorithmsVisualisation.Windows
         private CancellationTokenSource? cancellationTokenSource;
         private bool isWorking = false;
 
+        private int highlightIndex1 = -1;
+        private int highlightIndex2 = -1;
+
         public InternalSortWindow()
         {
             InitializeComponent();
@@ -45,7 +48,7 @@ namespace AlgorithmsVisualisation.Windows
                 {
                     Width = barWidth - 2,
                     Height = barHeight,
-                    Fill = Brushes.Black,
+                    Fill = (i == highlightIndex1 || i == highlightIndex2) ? Brushes.Red : Brushes.Black,
                 };
 
                 Canvas.SetLeft(rectangle, i * barWidth);
@@ -81,19 +84,43 @@ namespace AlgorithmsVisualisation.Windows
 
         private async Task RunSort(ISorting algorithm)
         {
-            await algorithm.Sort(
-                AlgCanvas,
-                array,
-                cancellationTokenSource!.Token,
-                async () =>
-                {
-                    DrawSamples(AlgCanvas, array);
-                    await DynamicDelay(cancellationTokenSource.Token);
-                },
-                token => DynamicDelay(token),
-                log => Log(log),
-                message => Dispatcher.Invoke(() => StepsTextBox.Text = message)
-            );
+            try
+            {
+                await algorithm.Sort(
+                    AlgCanvas,
+                    array,
+                    cancellationTokenSource!.Token,
+                    async () =>
+                    {
+                        DrawSamples(AlgCanvas, array);
+                        await DynamicDelay(cancellationTokenSource.Token);
+                    },
+                    token => DynamicDelay(token),
+                    log => Log(log),
+                    message => Dispatcher.Invoke(() => StepsTextBox.Text = message),
+                    HighlightColumns
+                );
+            }
+            finally
+            {
+                ResetColumnColors();
+            }
+        }
+
+        // Я начинаю терять веру в человечество.
+        private void ResetColumnColors()
+        {
+            highlightIndex1 = -1;
+            highlightIndex2 = -1;
+            DrawSamples(AlgCanvas, array);
+        }
+
+        private void HighlightColumns(int index1, int index2)
+        {
+            highlightIndex1 = index1;
+            highlightIndex2 = index2;
+
+            DrawSamples(AlgCanvas, array);
         }
 
         private async Task Log(string message)

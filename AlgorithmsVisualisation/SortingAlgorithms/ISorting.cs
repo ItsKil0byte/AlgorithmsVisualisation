@@ -11,7 +11,8 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
             Func<Task> onStep,
             Func<CancellationToken, Task> onDynamicDelay,
             Action<string> onLog,
-            Action<string> onExplain
+            Action<string> onExplain,
+            Action<int, int> onHighlight
         );
     }
 }
