@@ -30,7 +30,9 @@ namespace AlgorithmsVisualisation.Windows
             InitializeComponent();
 
             algorithms!["Сортировка пузырьком"] = new BubbleSort();
-            // ...
+            algorithms!["Сортировка расчёской"] = new CombSort();
+            algorithms!["Быстрая сортировка"] = new QuickSort();
+            algorithms!["Сортировка слиянием"] = new MergeSort();
 
             AlgSelector.ItemsSource = algorithms.Keys;
         }
