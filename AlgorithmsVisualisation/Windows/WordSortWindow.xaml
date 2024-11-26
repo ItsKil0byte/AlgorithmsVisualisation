@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Алгоритмы сортировки слов" Height="800" Width="1300" ResizeMode="NoResize">
     <Grid Margin="10">
+        <!-- Путь к файлу -->
         <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="0,0,0,10">
             <Label Content="Путь к файлу:" FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,1,0,0"/>
         </Border>
@@ -15,6 +16,7 @@
             <Button Content="Загрузить" Width="120" Height="30" FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="620,30,0,0" Click="LoadFile_Click"/>
         </Border>
 
+        <!-- Метод сортировки -->
         <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="0,0,0,10">
             <ComboBox x:Name="SortMethodComboBox" Width="200" Height="30" FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,70,0,0">
                 <ComboBoxItem Content="Merge Sort"/>
@@ -25,13 +27,26 @@
         <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="0,0,0,10">
             <Button Content="Сортировать" Width="140" Height="30" FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="220,70,0,0" Click="SortButton_Click"/>
         </Border>
-        
+
+        <!-- Результаты сортировки -->
         <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="0,0,0,10">
-            <TextBox x:Name="ResultTextBox" Width="1243" Height="400" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,110,0,0" 
+            <TextBox x:Name="ResultTextBox" Width="620" Height="400" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,110,0,0" 
                       AcceptsReturn="True" IsReadOnly="True" VerticalScrollBarVisibility="Auto" FontSize="16" 
                       FontFamily="Times New Roman"/>
         </Border>
         
+        <!-- Уникальные слова -->
+        <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="0,-25,0,10">
+            <StackPanel Margin="640,110,0,0">
+                <TextBlock FontSize="16" FontWeight="Bold" Text="Уникальные слова и их количество в тексте" Margin="0,0,0,5"/>
+                <TextBox x:Name="UniqueWordsTextBox" Width="610" Height="400" Margin="-8,0,0,5"
+                          AcceptsReturn="True" IsReadOnly="True" VerticalScrollBarVisibility="Auto" 
+                          FontSize="{Binding ElementName=FontSizeSlider, Path=Value}" 
+                          FontFamily="{Binding ElementName=FontComboBox, Path=SelectedItem.Content}"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Настройки шрифта -->
         <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="10,530,0,0" Width="300" Height="160" VerticalAlignment="Top" HorizontalAlignment="Left">
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
@@ -39,7 +54,7 @@
                     <TextBlock x:Name="FontSizeValueTextBlock" Text="14" FontSize="16" VerticalAlignment="Top" Margin="0,6,0,0"/>
                 </StackPanel>
                 
-                <Slider x:Name="FontSizeSlider" Minimum="10" Maximum="30" Value="14" Width="300" Height="30" 
+                <Slider x:Name="FontSizeSlider" Minimum="10" Maximum="30" Value="14" Width="275" Height="30" 
                         VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" 
                         ValueChanged="FontSizeSlider_ValueChanged" TickFrequency="1" IsSnapToTickEnabled="True" TickPlacement="BottomRight"/>
                 
@@ -55,14 +70,16 @@
             </StackPanel>
         </Border>
         
+        <!-- Статистика -->
         <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="10,530,10,0" Width="300" VerticalAlignment="Top" HorizontalAlignment="Right">
             <StackPanel>
                 <TextBlock x:Name="TotalWordsTextBlock" FontSize="16" Margin="10" Text="Общее количество слов: 0"/>
                 <TextBlock x:Name="UniqueWordsTextBlock" FontSize="16" Margin="10" Text="Количество уникальных слов: 0"/>
-                <TextBlock x:Name="TimeTakenTextBlock" FontSize="16" Margin="10" Text="Время выполнения: 0.00 секунд"/> 
+                <TextBlock x:Name="TimeTakenTextBlock" FontSize="16" Margin="10" Text="Время выполнения: 0.000 секунд"/> 
             </StackPanel>
         </Border>
         
+        <!-- Инструкция по использованию -->
         <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="335,530,0,0" Width="595" VerticalAlignment="Top" HorizontalAlignment="Left">
             <StackPanel>
                 <TextBlock FontSize="16" Margin="10" Text="Инструкция по использованию «Алгоритмы сортировки слов»:" FontWeight="Bold" TextWrapping="Wrap"/>

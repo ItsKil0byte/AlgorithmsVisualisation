@@ -82,7 +82,7 @@ namespace AlgorithmsVisualisation.Windows
 
                     stopwatch.Stop();
                     TimeSpan timeTaken = stopwatch.Elapsed; 
-                    TimeTakenTextBlock.Text = $"Время выполнения: {timeTaken.TotalSeconds:F2} секунд"; 
+                    TimeTakenTextBlock.Text = $"Время выполнения: {timeTaken.TotalSeconds:F3} секунд"; 
                 }
             }
             catch (Exception ex)
@@ -94,11 +94,22 @@ namespace AlgorithmsVisualisation.Windows
         private void UpdateWordStatistics(System.Collections.Generic.List<string> words)
         {
             var totalWords = words.Count;
-            var uniqueWords = words.Distinct().Count();
+            var uniqueWords = words.Distinct().ToList();
 
             TotalWordsTextBlock.Text = $"Общее количество слов: {totalWords}";
-            UniqueWordsTextBlock.Text = $"Количество уникальных слов: {uniqueWords}";
+            UniqueWordsTextBlock.Text = $"Количество уникальных слов: {uniqueWords.Count}";
+
+            // Подсчет повторений уникальных слов
+            var wordCounts = uniqueWords.ToDictionary(word => word, word => words.Count(w => w.Equals(word, StringComparison.OrdinalIgnoreCase)));
+
+            // Обновление TextBox с уникальными словами и их количеством
+            UniqueWordsTextBox.Clear();
+            foreach (var kvp in wordCounts)
+            {
+                UniqueWordsTextBox.AppendText($"{kvp.Key}: {kvp.Value}\n");
+            }
         }
+
 
         private void FontSizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
