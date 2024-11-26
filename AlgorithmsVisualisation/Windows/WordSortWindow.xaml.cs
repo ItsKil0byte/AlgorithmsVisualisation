@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Diagnostics; // Для использования Stopwatch
-using System.Linq; // Для использования LINQ
+using System.Diagnostics; 
+using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using AlgorithmsVisualisation.SortingAlgorithms;
@@ -9,7 +10,7 @@ namespace AlgorithmsVisualisation.Windows
 {
     public partial class WordSortWindow : Window
     {
-        private TextSorter textSorter;
+        private TextSorter textSorter = null!; // Используйте `null!`, если вы уверены, что инициализируете позже
         private Stopwatch stopwatch;
 
         public WordSortWindow()
@@ -66,18 +67,21 @@ namespace AlgorithmsVisualisation.Windows
                         sortMethod = "Результат ABC Sort:\n";
                     }
 
-                    ResultTextBox.Clear();
-                    ResultTextBox.AppendText(sortMethod + Environment.NewLine); 
-                    
                     var filteredWords = textSorter.Words
                         .Where(word => !string.IsNullOrWhiteSpace(word)) 
                         .ToList();
 
+                    var resultText = new StringBuilder();
+                    resultText.Append(sortMethod + Environment.NewLine); 
+
                     foreach (var word in filteredWords)
                     {
-                        ResultTextBox.AppendText(word + Environment.NewLine);
+                        resultText.Append(word + Environment.NewLine);
                     }
-                    
+
+                    ResultTextBox.Clear();
+                    ResultTextBox.AppendText(resultText.ToString());
+
                     UpdateWordStatistics(filteredWords);
 
                     stopwatch.Stop();
@@ -91,7 +95,7 @@ namespace AlgorithmsVisualisation.Windows
             }
         }
 
-        private void UpdateWordStatistics(System.Collections.Generic.List<string> words)
+        private void UpdateWordStatistics(List<string> words)
         {
             var totalWords = words.Count;
             var uniqueWords = words.Distinct().ToList();
@@ -110,7 +114,6 @@ namespace AlgorithmsVisualisation.Windows
             }
         }
 
-
         private void FontSizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (ResultTextBox != null)
@@ -124,7 +127,7 @@ namespace AlgorithmsVisualisation.Windows
             }
         }
 
-        private void FontComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void FontComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ResultTextBox != null && FontComboBox.SelectedItem is ComboBoxItem selectedFont)
             {

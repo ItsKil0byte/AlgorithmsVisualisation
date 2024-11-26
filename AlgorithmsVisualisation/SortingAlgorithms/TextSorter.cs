@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
+using System.Linq;
+using System.Text;
 
 namespace AlgorithmsVisualisation.SortingAlgorithms
 {
@@ -12,6 +13,7 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
         public TextSorter(string filePath)
         {
             LoadTextFromFile(filePath);
+            CleanWords(); 
         }
 
         private void LoadTextFromFile(string filePath)
@@ -23,14 +25,31 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error reading file: {ex.Message}");
+                Console.WriteLine($"Ошибка чтения файла: {ex.Message}");
                 words = new List<string>();
             }
         }
 
+        private void CleanWords()
+        {
+            for (int i = 0; i < words.Count; i++)
+            {
+                words[i] = CleanWord(words[i]);
+            }
+            words = words.Where(word => !string.IsNullOrEmpty(word)).ToList();
+        }
+
         private string CleanWord(string word)
         {
-            return Regex.Replace(word, @"[^\wа-яА-ЯёЁ0-9]", "");
+            var cleanedWord = new StringBuilder();
+            foreach (char c in word)
+            {
+                if (char.IsLetter(c) || char.IsDigit(c) || (c >= 'а' && c <= 'я') || (c >= 'А' && c <= 'Я'))
+                {
+                    cleanedWord.Append(c);
+                }
+            }
+            return cleanedWord.ToString();
         }
 
         public void MergeSort()
@@ -59,9 +78,9 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
             List<string> rightHalf = new List<string>(n2);
 
             for (int i = 0; i < n1; i++)
-                leftHalf.Add(CleanWord(words[left + i]));
+                leftHalf.Add(words[left + i]);
             for (int j = 0; j < n2; j++)
-                rightHalf.Add(CleanWord(words[mid + 1 + j]));
+                rightHalf.Add(words[mid + 1 + j]);
 
             int k = left, iIndex = 0, jIndex = 0;
 
@@ -97,14 +116,7 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
 
         public void ABCSort()
         {
-            var abcWords = words.Select(CleanWord)
-                .Where(word => word.Length > 0 && 
-                (char.IsLetter(word[0]) || char.IsDigit(word[0]) || 
-                (word[0] >= 'А' && word[0] <= 'я'))).ToList();
-
-            abcWords.Sort((x, y) => string.Compare(x, y, StringComparison.CurrentCultureIgnoreCase));
-
-            words = abcWords;
+            words.Sort((x, y) => string.Compare(x, y, StringComparison.CurrentCultureIgnoreCase));
         }
 
         public List<string> Words => new List<string>(words);
