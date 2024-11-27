@@ -4,9 +4,91 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AlgorithmsVisualisation.Windows"
+        Loaded="Window_Loaded"
         mc:Ignorable="d"
-        Title="Алгоритмы внешней сортировки" Height="500" Width="500" FontSize="16">
+        Title="Алгоритмы внешней сортировки" Height="650" Width="1300" FontSize="16" ResizeMode="CanMinimize">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.4*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0.5*"/>
+        </Grid.ColumnDefinitions>
+
+        <GroupBox Header="Визуализация" BorderThickness="3" BorderBrush="LightGray" Grid.Column="1" Grid.RowSpan="5" Margin="5" Padding="5">
+            <Canvas>
+                <StackPanel x:Name="ColumnA" Canvas.Left="10" Canvas.Top="34" Background="LightGray" Width="127" Height="525" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <TextBox Margin="5" IsEnabled="False" Text="          A"/>
+                </StackPanel>
+
+                <StackPanel x:Name="ColumnB" Canvas.Left="165" Canvas.Top="34" Background="LightGray" Width="134" Height="525" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <TextBox Margin="5" IsEnabled="False" Text="           B"/>
+                </StackPanel>
+
+                <StackPanel x:Name="ColumnC" Canvas.Left="326" Canvas.Top="34" Background="LightGray" Width="142" Height="525" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <TextBox Margin="5" IsEnabled="False" Text="           C"/>
+                </StackPanel>
+                <StackPanel x:Name="ColumnD" Canvas.Left="500" Canvas.Top="34" Background="LightGray" Width="142" Height="525" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <TextBox Margin="5" IsEnabled="False" Text="            D"/>
+                </StackPanel>
+
+            </Canvas>
+        </GroupBox>
+
+        <GroupBox Header="Выбор алгоритма" BorderThickness="3" BorderBrush="LightGray" Margin="5">
+            <ComboBox x:Name="AlgSelector" SelectedIndex="0" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="10" Height="50"/>
+        </GroupBox>
+
+        <GroupBox Header="Скорость сортировки" BorderThickness="3" BorderBrush="LightGray" Margin="5" Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Slider x:Name="SpeedSlider" Minimum="5" Maximum="4000" TickFrequency="500" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Margin="10" ValueChanged="SpeedSlider_ValueChanged"/>
+                <Label Content="Медленно" Grid.Row="1" Margin="15,0,0,0" HorizontalAlignment="Left"/>
+                <Label Content="Быстро" Grid.Row="1" Margin="0,0,15,0" HorizontalAlignment="Right"/>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Путь к файлу" BorderThickness="3" BorderBrush="LightGray" Margin="5" Grid.Row="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="93*"/>
+                    <ColumnDefinition Width="19*"/>
+                    <ColumnDefinition Width="140*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Button  x:Name="SelectFileButton" Content="Выбрать файл" HorizontalAlignment="Left" Margin="10,3,0,0" VerticalAlignment="Top" Grid.Row="1" Click="SelectFileButton_Click" Grid.ColumnSpan="3" Width="116"/>
+                <TextBox x:Name="SelectedFile" Grid.ColumnSpan="3"  HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="NoWrap" Text="Введите путь" VerticalAlignment="Center" Width="232" MaxWidth="232" Height="26" MaxHeight="26" LostFocus="SelectedFile_LostFocus"/>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Выбор атрибута" Grid.Row="3" BorderThickness="3" BorderBrush="LightGray" Margin="5" Padding="10">
+            <ComboBox x:Name="AttrSelector" HorizontalAlignment="Center" Width="221" Height="44"/>
+        </GroupBox>
+
+        <GroupBox Header="Запустить | Остановить" Grid.Row="4" BorderThickness="3" BorderBrush="LightGray" Margin="5" Padding="10">
+            <Button x:Name="StartButton" Content="Запустить" Click="StartButton_Click"/>
+        </GroupBox>
+
+        <GroupBox Header="Пояснение" BorderThickness="3" BorderBrush="LightGray" Grid.Column="2" Margin="5" Padding="10" Grid.RowSpan="2">
+            <TextBox x:Name="StepsTextBox" FontWeight="Bold" IsReadOnly="True" TextWrapping="Wrap" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        </GroupBox>
+
+        <GroupBox Header="Логи" BorderThickness="3" BorderBrush="LightGray" Grid.Column="2" Grid.Row="2" Margin="5" Padding="10" Grid.RowSpan="3">
+            <TextBox x:Name="LogsTextBox" IsReadOnly="True" TextWrapping="Wrap"/>
+        </GroupBox>
+
     </Grid>
 </Window>
