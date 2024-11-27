@@ -31,7 +31,7 @@ namespace AlgorithmsVisualisation.Windows
         {
             InitializeComponent();
 
-            algorithms!["Быстрая сортировка"] = new StraightMergeSort();
+            algorithms!["Прямая сотртировка"] = new StraightMergeSort();
             //algorithms!["Сортировка слиянием"] = new MergeSort();
 
             AlgSelector.ItemsSource = algorithms.Keys;
