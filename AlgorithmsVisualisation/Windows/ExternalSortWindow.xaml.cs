@@ -200,6 +200,7 @@ namespace AlgorithmsVisualisation.Windows
 
         private void SelectFileButton_Click(object sender, RoutedEventArgs e)
         {
+            SelectedFile.Text = string.Empty;
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
             openFileDialog.Title = "Выберите файл";
@@ -226,6 +227,8 @@ namespace AlgorithmsVisualisation.Windows
                 {
                     try
                     {
+                        AttrSelector.ItemsSource = null;
+                        columns.Clear();
                         int i = 0;
                         foreach (var columnName in reader.ReadLine()!.Split(";"))
                         {
@@ -235,6 +238,7 @@ namespace AlgorithmsVisualisation.Windows
                     }
                     catch { }
                     AttrSelector.ItemsSource = columns.Keys;
+                    
                 }
             }
             catch { }
