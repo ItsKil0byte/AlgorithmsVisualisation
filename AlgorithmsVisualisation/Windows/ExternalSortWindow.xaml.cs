@@ -16,16 +16,16 @@ namespace AlgorithmsVisualisation.Windows
         private readonly Dictionary<string, IExternalSorting>? algorithms = [];
         private readonly Dictionary<string, int>? columns = [];
         private readonly Dictionary<string, Label>? lables = [];
-        private List<int> array = [];
-        private readonly Random random = new();
-        private int sampleCount = 10;
+
+
+
         private int delay;
         private string selectedFilePath;
 
         private CancellationTokenSource? cancellationTokenSource;
         private bool isWorking = false;
 
-        string outputFile = "C:\\Users\\zxcursedfan\\Desktop\\otec\\output.csv";
+     
 
         public ExternalSortWindow()
         {
@@ -37,37 +37,6 @@ namespace AlgorithmsVisualisation.Windows
             AlgSelector.ItemsSource = algorithms.Keys;
         }
 
-        private void DrawSamples(Canvas canvas, List<int> array)
-        {
-            canvas.Children.Clear();
-            double barWidth = canvas.ActualWidth / array.Count;
-
-            for (int i = 0; i < array.Count; i++)
-            {
-                double barHeight = (double)array[i] / array.Max() * canvas.ActualHeight;
-
-                Rectangle rectangle = new()
-                {
-                    Width = barWidth - 2,
-                    Height = barHeight,
-                    //Fill = (i == highlightIndex1 || i == highlightIndex2) ? Brushes.Red : Brushes.Black,
-                };
-
-                Canvas.SetLeft(rectangle, i * barWidth);
-                Canvas.SetTop(rectangle, canvas.ActualHeight - barHeight);
-
-                canvas.Children.Add(rectangle);
-            }
-        }
-
-        private void Shuffle(List<int> array)
-        {
-            for (int i = array.Count - 1; i > 0; i--)
-            {
-                int swapIndex = random.Next(i + 1);
-                (array[i], array[swapIndex]) = (array[swapIndex], array[i]);
-            }
-        }
 
         private async Task DynamicDelay(CancellationToken token)
         {
@@ -101,24 +70,10 @@ namespace AlgorithmsVisualisation.Windows
             }
             finally
             {
-                ResetColumnColors();
+               
             }
         }
 
-        private void ResetColumnColors()
-        {
-            //highlightIndex1 = -1;
-            //highlightIndex2 = -1;
-            //DrawSamples(AlgCanvas, array);
-        }
-
-        private void HighlightColumns(int index1, int index2)
-        {
-            //highlightIndex1 = index1;
-            //highlightIndex2 = index2;
-
-            //DrawSamples(AlgCanvas, array);
-        }
 
         private async Task Log(string message)
         {
@@ -138,12 +93,6 @@ namespace AlgorithmsVisualisation.Windows
             AlgSelector.IsEnabled = enable;
         }
 
-        private void ShuffleButton_Click(object sender, RoutedEventArgs e)
-        {
-            Shuffle(array);
-            //DrawSamples(AlgCanvas, array);
-        }
-
         private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
             string? algorithmName = AlgSelector.SelectedItem.ToString();
@@ -153,6 +102,7 @@ namespace AlgorithmsVisualisation.Windows
             {
                 await Log($"{algorithm.GetType().Name} прервана пользователем.");
 
+                ClearAllColumns();
                 cancellationTokenSource?.Cancel();
                 isWorking = false;
                 StartButton.Content = "Запустить";
@@ -194,8 +144,7 @@ namespace AlgorithmsVisualisation.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            array = Enumerable.Range(1, sampleCount).ToList();
-            //DrawSamples(AlgCanvas, array);
+            
         }
 
         private void SelectFileButton_Click(object sender, RoutedEventArgs e)
@@ -290,6 +239,14 @@ namespace AlgorithmsVisualisation.Windows
                         break;
                 }
             }
+        }
+
+        private void ClearAllColumns()
+        {
+            ColumnA.Children.Clear();
+            ColumnB.Children.Clear();
+            ColumnC.Children.Clear();
+            ColumnD.Children.Clear();
         }
     }
 }
