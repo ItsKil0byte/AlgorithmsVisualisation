@@ -201,7 +201,7 @@ namespace AlgorithmsVisualisation.Windows
         private void SelectFileButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-
+            SelectedFile.Text = string.Empty;
             openFileDialog.Title = "Выберите файл";
             openFileDialog.Filter = "Текстовые файлы (*.csv)|*.csv";
             openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
