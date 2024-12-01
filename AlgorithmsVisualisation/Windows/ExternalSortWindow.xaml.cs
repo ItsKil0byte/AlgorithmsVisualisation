@@ -18,6 +18,9 @@ namespace AlgorithmsVisualisation.Windows
         private readonly Dictionary<string, Label>? lables = [];
 
 
+        
+
+
 
         private int delay;
         private string selectedFilePath;
@@ -130,6 +133,7 @@ namespace AlgorithmsVisualisation.Windows
                 {
                     isWorking = false;
                     StartButton.Content = "Запустить";
+                    ClearAllColumns();
 
                     if (!wasCancelled)
                     {
@@ -216,14 +220,17 @@ namespace AlgorithmsVisualisation.Windows
             }
         }
 
-        private void AddValueToColumn(string columnName, string value)
+        
+
+        private void AddValueToColumn(string columnName, string value, Color color)
         {
             if (!string.IsNullOrWhiteSpace(value))
             {
                 Label l = new Label();
                 l.Content = value;
+                l.Foreground = new SolidColorBrush(color);
                 lables[value] = l;
-                switch (columnName) 
+                switch (columnName)
                 {
                     case "A":
                         ColumnA.Children.Add(l);
@@ -239,6 +246,11 @@ namespace AlgorithmsVisualisation.Windows
                         break;
                 }
             }
+        }
+
+        private void AddValueToColumn(string columnName, string value)
+        {
+            AddValueToColumn(columnName, value, Colors.Black);
         }
 
         private void ClearAllColumns()

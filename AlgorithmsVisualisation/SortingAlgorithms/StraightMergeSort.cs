@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace AlgorithmsVisualisation.SortingAlgorithms
@@ -12,6 +13,27 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
     public class StraightMergeSort : IExternalSorting
     {
         string outputFile = "C:\\Users\\zxcursedfan\\Desktop\\otec\\output.csv";
+
+
+        Dictionary<long, Color> colorDictionary = new Dictionary<long, Color>
+        {
+            { 1, Color.FromArgb(255, 255, 0, 0) },  // Красный
+            { 2, Color.FromArgb(255, 200, 0, 0) },  // Темно-красный
+            { 3, Color.FromArgb(255, 0, 240, 0) },  // Зеленый
+            { 4, Color.FromArgb(255, 0, 190, 0) },  // Темно-зеленый
+            { 5, Color.FromArgb(255, 0, 0, 255) },  // Синий
+            { 6, Color.FromArgb(255, 0, 0, 200) },  // Темно-синий
+            { 7, Color.FromArgb(255, 255, 255, 0) },  // Желтый
+            { 8, Color.FromArgb(255, 200, 200, 0) },  // Темно-желтый
+            { 9, Color.FromArgb(255, 255, 165, 0) },  // Оранжевый
+            { 10, Color.FromArgb(255, 200, 130, 0) },  // Темно-оранжевый
+            { 11, Color.FromArgb(255, 128, 0, 128) },  // Пурпурный
+            { 12, Color.FromArgb(255, 100, 0, 100) },  // Темно-пурпурный
+            { 13, Color.FromArgb(255, 0, 255, 255) },  // Бирюзовый
+            { 14, Color.FromArgb(255, 0, 200, 200) },  // Темно-бирюзовый
+            { 15, Color.FromArgb(255, 255, 192, 203) },  // Розовый
+            { 16, Color.FromArgb(255, 200, 150, 160) },  // Темно-розовый
+        };
 
         private string? _headers;
         private long _iterations, _segments;
@@ -33,7 +55,7 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
                                   StringComparison.Ordinal) < 0;
         }
 
-        public async Task Sort(string inputFilePath, int sortKeyIndex,CancellationToken token, Action<string, string> addToColumn, Action<string, string> removeFromColumn, Func<CancellationToken, Task> onDynamicDelay, Action<string> onLog, Action<string> onExplain)
+        public async Task Sort(string inputFilePath, int sortKeyIndex,CancellationToken token, Action<string, string, Color> addToColumn, Action<string, string> removeFromColumn, Func<CancellationToken, Task> onDynamicDelay, Action<string> onLog, Action<string> onExplain)
         {
             //надеюсь это никто никогда не увидит
             _iterations = 1;
@@ -45,7 +67,7 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
                 string line;
                 while ((line = reader.ReadLine()) != null)
                 {
-                    addToColumn("A", line);
+                    addToColumn("A", line, Colors.Black);
                 }
             }
             while (true)
@@ -82,7 +104,7 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
                         fileB.WriteLine(currentRecord);
                         onLog($"Положили {currentRecord} в подфайл B");
                         removeFromColumn("A", currentRecord);
-                        addToColumn("B", currentRecord);
+                        addToColumn("B", currentRecord, colorDictionary[_segments]);
                         await onDynamicDelay(token);
                     }
                     else
@@ -91,7 +113,7 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
                         fileC.WriteLine(currentRecord);
                         onLog($"Положили {currentRecord} в подфайл C");
                         removeFromColumn("A", currentRecord);
-                        addToColumn("C", currentRecord);
+                        addToColumn("C", currentRecord, colorDictionary[_segments]);
                         await onDynamicDelay(token);
                     }
 
@@ -137,7 +159,7 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
                         onExplain.Invoke("В подфайле B закончились пары, поэтому перекладываем все остальные значения из C");
                         onLog("Переложили всё оставшееся значения из C");
                         removeFromColumn("C", elementC);
-                        addToColumn("A", elementC);
+                        addToColumn("A", elementC, Colors.Black);
                         await onDynamicDelay(token);
                         currentRecord2 = elementC;
                     }
@@ -147,7 +169,7 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
                         onExplain.Invoke("В подфайле C закончились пары, поэтому перекладываем все остальные значения из B");
                         onLog("Переложили всё оставшееся значения из B");
                         removeFromColumn("B", elementB);
-                        addToColumn("A", elementB);
+                        addToColumn("A", elementB, Colors.Black);
                         await onDynamicDelay(token);
                         flag2 = true;
                     }
@@ -159,7 +181,7 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
                             onExplain.Invoke($"{elementB.Split(';')[_chosenField]} < {elementC.Split(';')[_chosenField]}, значит кладём в A элемент из B");
                             onLog($"Переложили {elementB.Split(';')[_chosenField]} из B в A");
                             removeFromColumn("B", elementB);
-                            addToColumn("A", elementB);
+                            addToColumn("A", elementB, Colors.Black);
                             await onDynamicDelay(token);
                             //Если запись из файла В оказалась меньше
                             currentRecord2 = elementB;
@@ -170,7 +192,7 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
                             onExplain.Invoke($"{elementC.Split(';')[_chosenField]} <= {elementB.Split(';')[_chosenField]}, значит кладём в A элемент из C");
                             onLog($"Переложили {elementB.Split(';')[_chosenField]} из C в A");
                             removeFromColumn("C", elementC);
-                            addToColumn("A", elementC);
+                            addToColumn("A", elementC, Colors.Black);
                             await onDynamicDelay(token);
                             //Если запись из файла С оказалась меньше
                             currentRecord2 = elementC;

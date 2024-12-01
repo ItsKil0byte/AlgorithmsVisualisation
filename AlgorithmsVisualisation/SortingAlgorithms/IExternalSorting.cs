@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace AlgorithmsVisualisation.SortingAlgorithms
 {
@@ -13,7 +14,7 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
             string inputFilePath,
             int key,
             CancellationToken token,
-            Action<string, string> addToColumn,
+            Action<string, string, Color> addToColumn,
             Action<string, string> removeFromColumn,
             Func<CancellationToken, Task> onDynamicDelay,
             Action<string> onLog,
