@@ -4,7 +4,7 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
 {
     public class BubbleSort : ISorting
     {
-        public async Task Sort(Canvas canvas, List<int> array, CancellationToken token, Func<Task> onStep, Func<CancellationToken, Task> onDynamicDelay, Action<string> onLog, Action<string> onExplain, Action<int, int> onHighlight)
+        public async Task Sort(Canvas canvas, List<int> array, CancellationToken token, Func<Task> onStep, Func<CancellationToken, Task> onDynamicDelay, Action<string> onLog, Action<string> onExplain, Action<int, int> onHighlight, Action<int, int> onHighlightRange)
         {
             for (int i = 0; i < array.Count; i++)
             {

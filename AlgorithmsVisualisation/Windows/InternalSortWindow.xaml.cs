@@ -9,6 +9,7 @@ namespace AlgorithmsVisualisation.Windows
 {
     /// <summary>
     /// Логика взаимодействия для InternalSortingWindow.xaml
+    /// Мне очень стыдно за это
     /// </summary>
     public partial class InternalSortWindow : Window
     {
@@ -24,6 +25,9 @@ namespace AlgorithmsVisualisation.Windows
 
         private int highlightIndex1 = -1;
         private int highlightIndex2 = -1;
+
+        private int highlightRangeStart = -1;
+        private int highlightRangeEnd = -1;
 
         public InternalSortWindow()
         {
@@ -46,11 +50,22 @@ namespace AlgorithmsVisualisation.Windows
             {
                 double barHeight = (double)array[i] / array.Max() * canvas.ActualHeight;
 
+                Brush fill = Brushes.Black;
+
+                if (i == highlightIndex1 || i == highlightIndex2)
+                {
+                    fill = Brushes.Red;
+                }
+                else if (i >= highlightRangeStart && i <= highlightRangeEnd)
+                {
+                    fill = Brushes.Blue;
+                }
+
                 Rectangle rectangle = new()
                 {
                     Width = barWidth - 2,
                     Height = barHeight,
-                    Fill = (i == highlightIndex1 || i == highlightIndex2) ? Brushes.Red : Brushes.Black,
+                    Fill = fill,
                 };
 
                 Canvas.SetLeft(rectangle, i * barWidth);
@@ -58,6 +73,20 @@ namespace AlgorithmsVisualisation.Windows
 
                 canvas.Children.Add(rectangle);
             }
+        }
+
+        private void ResetRangeColors()
+        {
+            highlightRangeStart = -1;
+            highlightRangeEnd = -1;
+            ResetColumnColors();
+        }
+
+        private void HighlightRange(int start, int end)
+        {
+            highlightRangeStart = start;
+            highlightRangeEnd = end;
+            DrawSamples(AlgCanvas, array);
         }
 
         private void Shuffle(List<int> array)
@@ -100,11 +129,13 @@ namespace AlgorithmsVisualisation.Windows
                     token => DynamicDelay(token),
                     log => Log(log),
                     message => Dispatcher.Invoke(() => StepsTextBox.Text = message),
-                    HighlightColumns
+                    HighlightColumns,
+                    HighlightRange
                 );
             }
             finally
             {
+                ResetRangeColors();
                 ResetColumnColors();
             }
         }
@@ -206,7 +237,7 @@ namespace AlgorithmsVisualisation.Windows
 
         private void SpeedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            delay = (int)(4005 - SpeedSlider.Value); // Над зедержкой ещё надо будет подумать.
+            delay = (int)(4005 - SpeedSlider.Value);
         }
 
         private void SampleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
