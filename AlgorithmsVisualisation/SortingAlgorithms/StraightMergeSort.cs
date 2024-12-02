@@ -72,9 +72,6 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
             }
             while (true)
             {
-                //Разбиваем записи на подфайлы
-                
-
 
                 _segments = 1;
                 using var fileA = new StreamReader(_filePath);
@@ -82,15 +79,14 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
 
                 using var fileB = new StreamWriter("B.csv");
                 using var fileC = new StreamWriter("C.csv");
-                //В этой переменной будет храниться очередная считанная из исходного файла запись
+
                 string? currentRecord = fileA.ReadLine();
 
                 bool flag = true;
                 int counter = 0;
-                //цикл прекратится, когда мы дойдём до конца исходного файла
+
                 while (currentRecord is not null)
                 {
-                    //дошли до конца цепочки, переключаемся на запись новой
                     if (counter == _iterations)
                     {
                         counter = 0;
@@ -117,7 +113,6 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
                         await onDynamicDelay(token);
                     }
 
-                    //считываем следующую запись
                     currentRecord = fileA.ReadLine();
                     counter++;
                 }
@@ -126,19 +121,18 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
                 fileB.Close();
                 fileC.Close();
 
-                //Если после разделения цепочка осталась одна, значит, записи в файле отсортированы
                 if (_segments == 1)
                 {
                     onExplain.Invoke("После разделения осталась одна цепочка, значит все файлы отсортированы");
                     break;
                 }
 
-                //Сливаем вместе цепочки из под файлов
+
                 using var writerA = new StreamWriter(_filePath);
                 using var readerB = new StreamReader("B.csv");
                 using var readerC = new StreamReader("C.csv");
 
-                //Не забываем вернуть заголовки таблицы на своё место, в начало исходного файла
+
                 writerA.WriteLine(_headers);
 
                 string? elementB = readerB.ReadLine();
@@ -146,7 +140,7 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
 
                 int counterB = 0;
                 int counterC = 0;
-                //Итерации будут происходить, когда 
+
                 while (elementB is not null || elementC is not null)
                 {
                     string? currentRecord2;
