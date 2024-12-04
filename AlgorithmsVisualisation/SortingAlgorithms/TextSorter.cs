@@ -116,9 +116,71 @@ namespace AlgorithmsVisualisation.SortingAlgorithms
 
         public void ABCSort()
         {
-            words.Sort((x, y) => string.Compare(x, y, StringComparison.CurrentCultureIgnoreCase));
+            words = ABCSort(words);
         }
 
+        private List<string> ABCSort(List<string> inputCollection)
+        {
+            // Базовый случай - если коллекция пуста, возвращаем
+            if (inputCollection.Count == 0)
+                return new List<string>();
+
+            // Создаем словарь для хранения слов и их рангов
+            Dictionary<string, int> table = new Dictionary<string, int>();
+
+            // Заполняем словарь словами и их рангами
+            foreach (var str in inputCollection)
+            {
+                if (str.Length > 0)
+                {
+                    if (table.ContainsKey(str))
+                    {
+                        table[str]++;
+                    }
+                    else
+                    {
+                        table.Add(str, 1);
+                    }
+                }
+            }
+
+            // Сортируем словарь, сначала цифры, затем буквы
+            var sortedTable = table.OrderBy(x =>
+            {
+                if (IsNumber(x.Key))
+                {
+                    return new Tuple<int, string>(0, x.Key);
+                }
+                else
+                {
+                    return new Tuple<int, string>(1, x.Key);
+                }
+            }, Comparer<Tuple<int, string>>.Create((a, b) => a.Item1.CompareTo(b.Item1) == 0 ? a.Item2.CompareTo(b.Item2) : a.Item1.CompareTo(b.Item1)));
+
+            // Заполняем отсортированный список
+            List<string> sortedWords = new List<string>();
+            foreach (var item in sortedTable)
+            {
+                for (int i = 0; i < item.Value; i++)
+                {
+                    sortedWords.Add(item.Key);
+                }
+            }
+
+            // Рекурсивно сортируем оставшиеся элементы
+            List<string> remainingWords = inputCollection.Except(sortedWords).ToList();
+            sortedWords.AddRange(ABCSort(remainingWords));
+
+            return sortedWords;
+        }
+
+        private bool IsNumber(string str)
+        {
+            return int.TryParse(str, out _);
+        }
+
+
+        
         public List<string> Words => new List<string>(words);
     }
 }

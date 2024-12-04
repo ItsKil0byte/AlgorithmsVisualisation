@@ -73,6 +73,10 @@
         <!-- Статистика -->
         <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="10,530,10,0" Width="300" VerticalAlignment="Top" HorizontalAlignment="Right">
             <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontSize="16" Margin="10" Text="Показывать статистику:"/>
+                    <CheckBox x:Name="ShowWordStatisticsCheckBox" Margin="10" Checked="ShowWordStatisticsCheckBox_Checked" Unchecked="ShowWordStatisticsCheckBox_Unchecked" IsChecked="True"/>
+                </StackPanel>
                 <TextBlock x:Name="TotalWordsTextBlock" FontSize="16" Margin="10" Text="Общее количество слов: 0"/>
                 <TextBlock x:Name="UniqueWordsTextBlock" FontSize="16" Margin="10" Text="Количество уникальных слов: 0"/>
                 <TextBlock x:Name="TimeTakenTextBlock" FontSize="16" Margin="10" Text="Время выполнения: 0.000 секунд"/> 
@@ -85,7 +89,7 @@
                 <TextBlock FontSize="16" Margin="10" Text="Инструкция по использованию «Алгоритмы сортировки слов»:" FontWeight="Bold" TextWrapping="Wrap"/>
                 <TextBlock FontSize="14" Margin="10,0,10,0" Text="1. Скопируйте путь к файлу. Затем вставьте в текстовое поле программы «‎Путь к файлу». Затем нажмите кнопку «‎Загрузить»." TextWrapping="Wrap"/>
                 <TextBlock FontSize="14" Margin="10,0,10,0" Text="2. Выберите желаемый вариант сортировки слов в выпадающем меню. Затем нажмите кнопку «‎Сортировать». Если текстовый файл содержит большое количество слов, то выполнение алгоритма может быть довольно долгим. После получения результата можете выбрать комфортный размер шрифта и стиль." TextWrapping="Wrap"/>
-                <TextBlock FontSize="14" Margin="10,0,10,10" Text="3. Также в программе вы можете увидеть блок статистики." TextWrapping="Wrap"/>
+                <TextBlock FontSize="14" Margin="10,0,10,10" Text="3. Также в программе вы можете увидеть блок статистики, который можно включать/выключать с помощью чекбокса." TextWrapping="Wrap"/>
             </StackPanel>
         </Border>
     </Grid>

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Diagnostics; 
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -10,13 +10,14 @@ namespace AlgorithmsVisualisation.Windows
 {
     public partial class WordSortWindow : Window
     {
-        private TextSorter textSorter = null!; // Используйте `null!`, если вы уверены, что инициализируете позже
+        private TextSorter textSorter = null!;
         private Stopwatch stopwatch;
+        private bool showWordStatistics = true;
 
         public WordSortWindow()
         {
             InitializeComponent();
-            stopwatch = new Stopwatch(); 
+            stopwatch = new Stopwatch();
         }
 
         private void LoadFile_Click(object sender, RoutedEventArgs e)
@@ -68,11 +69,11 @@ namespace AlgorithmsVisualisation.Windows
                     }
 
                     var filteredWords = textSorter.Words
-                        .Where(word => !string.IsNullOrWhiteSpace(word)) 
+                        .Where(word => !string.IsNullOrWhiteSpace(word))
                         .ToList();
 
                     var resultText = new StringBuilder();
-                    resultText.Append(sortMethod + Environment.NewLine); 
+                    resultText.Append(sortMethod + Environment.NewLine);
 
                     foreach (var word in filteredWords)
                     {
@@ -82,11 +83,14 @@ namespace AlgorithmsVisualisation.Windows
                     ResultTextBox.Clear();
                     ResultTextBox.AppendText(resultText.ToString());
 
-                    UpdateWordStatistics(filteredWords);
+                    if (showWordStatistics)
+                    {
+                        UpdateWordStatistics(filteredWords);
+                    }
 
                     stopwatch.Stop();
-                    TimeSpan timeTaken = stopwatch.Elapsed; 
-                    TimeTakenTextBlock.Text = $"Время выполнения: {timeTaken.TotalSeconds:F3} секунд"; 
+                    TimeSpan timeTaken = stopwatch.Elapsed;
+                    TimeTakenTextBlock.Text = $"Время выполнения: {timeTaken.TotalSeconds:F3} секунд";
                 }
             }
             catch (Exception ex)
@@ -112,6 +116,16 @@ namespace AlgorithmsVisualisation.Windows
             {
                 UniqueWordsTextBox.AppendText($"{kvp.Key}: {kvp.Value}\n");
             }
+        }
+
+        private void ShowWordStatisticsCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            showWordStatistics = true;
+        }
+
+        private void ShowWordStatisticsCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            showWordStatistics = false;
         }
 
         private void FontSizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
